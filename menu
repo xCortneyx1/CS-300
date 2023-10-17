@@ -1,0 +1,115 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <Main.h>
+
+using namespace std;
+
+// Define the Course structure (same as before)
+struct Course {
+string courseNumber;
+
+string courseTitle;
+
+vector<string> prerequisites;
+
+};
+string fileName;
+
+
+
+bool loadDataFromFile(const string& filename, vector<Course>& courseData) {
+	// Function to load data from the file (same as before)
+}
+
+// Function to display the menu and get user choice
+char displayMenu() {
+	char choice;
+	cout << "\nMenu:\n";
+	cout << "1. Load Data Structure\n";
+	cout << "2. Print Course List\n";
+	cout << "3. Print Course Information\n";
+	cout << "4. Exit\n";
+	cout << "Enter your choice (1/2/3/4): ";
+	cin >> choice;
+	return choice;
+}
+
+int main() {
+	vector<Course> courseData;
+	// Load data from the file (same as before)
+
+	char choice;
+	do {
+		choice = displayMenu();
+
+		switch (choice) {
+		case '1':
+			// Load Data Structure
+			if (loadDataFromFile(fileName, courseData)) {
+				cout << "Course data loaded successfully." << endl;
+			} else {
+				cout << "Failed to load course data." << endl;
+			}
+			break;
+		case '2':
+			// Print Course List
+			if (courseData.empty()) {
+				cout << "Course data is empty. Please load data first." << endl;
+			} else {
+				// Sort the course data alphabetically by course number
+				sort(courseData.begin(), courseData.end(),
+						[](const Course& a, const Course& b) {
+					return a.courseNumber < b.courseNumber;
+				});
+
+				// Print the sorted list
+				cout << "Alphanumeric Course List:\n";
+				for (const Course& course : courseData) {
+					cout << course.courseNumber << " - " << course.courseTitle << "\n";
+				}
+			}
+			break;
+		case '3':
+			// Print Course Information
+			if (courseData.empty()) {
+				cout << "Course data is empty. Please load data first." << endl;
+			} else {
+				string courseNumber;
+				cout << "Enter the course number: ";
+				cin >> courseNumber;
+
+				bool courseFound = false;
+				for (const Course& course : courseData) {
+					if (course.courseNumber == courseNumber) {
+						courseFound = true;
+						cout << "Course Title: " << course.courseTitle << "\n";
+						if (!course.prerequisites.empty()) {
+							cout << "Prerequisites:\n";
+							for (const string& prereq : course.prerequisites) {
+								cout << prereq << "\n";
+							}
+						} else {
+							cout << "No prerequisites for this course.\n";
+						}
+						break;
+					}
+				}
+
+				if (!courseFound) {
+					cout << "Course not found." << endl;
+				}
+			}
+			break;
+			cout << "Exiting the program." << endl;
+			break;
+		default:
+			cout << "Invalid choice. Please try again." << endl;
+			break;
+		}
+	} while (choice != '4');
+
+	return 0;
+}
